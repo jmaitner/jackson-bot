@@ -4,7 +4,7 @@ compatibility_date = "2025-01-01"
 
 [[kv_namespaces]]
 binding = "RATE_LIMITER"
-id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id = "928afb66a89b4856b55288a0d24d2ef6"
 
 # Set your API key with: npx wrangler secret put ANTHROPIC_API_KEY
 # Never put the key directly in this file
