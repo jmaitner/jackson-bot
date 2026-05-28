@@ -218,6 +218,23 @@ async function callClaude(messages, apiKey) {
   return data.content?.[0]?.text || '';
 }
 
+// ── Logging ───────────────────────────────────────────────────────────────────
+
+function logConversation(env, ip, userMessage, botResponse) {
+  if (!env.LOGGING_WEBHOOK) return;
+  // Fire-and-forget — don't await, never blocks the response
+  fetch(env.LOGGING_WEBHOOK, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      timestamp: new Date().toISOString(),
+      ip: ip.slice(0, -3) + 'xxx', // anonymize last octet
+      userMessage,
+      botResponse
+    })
+  }).catch(() => {}); // swallow errors silently
+}
+
 // ── Main handler ──────────────────────────────────────────────────────────────
 
 export default {
@@ -246,6 +263,8 @@ export default {
 
       try {
         const response = await callClaude(body.messages, env.ANTHROPIC_API_KEY);
+        const lastUserMsg = [...body.messages].reverse().find(m => m.role === 'user');
+        logConversation(env, ip, lastUserMsg?.content || '', response);
         return json({ response });
       } catch (err) {
         console.error('Claude error:', err.message);
