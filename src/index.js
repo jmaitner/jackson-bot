@@ -349,12 +349,43 @@ const HTML = `<!DOCTYPE html>
     #sendBtn:hover:not(:disabled) { background: var(--red-hover); }
     #sendBtn:disabled { background: var(--gray-200); color: var(--gray-500); cursor: not-allowed; }
 
+    /* Mobile profile bar (hidden on desktop) */
+    .mobile-bar {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      flex-shrink: 0;
+    }
+    .mobile-photo {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      object-fit: cover; object-position: center top;
+      flex-shrink: 0;
+    }
+    .mobile-name { font-size: 14px; font-weight: 700; flex: 1; }
+    .mobile-actions { display: flex; gap: 6px; }
+    .mobile-action {
+      font-size: 12px; font-weight: 600; color: var(--dark);
+      text-decoration: none; padding: 5px 10px;
+      border: 1px solid var(--gray-300); border-radius: 6px;
+      white-space: nowrap; transition: all 0.15s;
+    }
+    .mobile-action:hover { background: var(--dark); color: white; border-color: var(--dark); }
+
     /* Mobile */
     @media (max-width: 720px) {
       .sidebar { display: none; }
-      .message { max-width: 92%; }
-      .messages { padding: 16px; gap: 14px; }
-      .input-area { padding: 10px 16px 14px; }
+      .mobile-bar { display: flex; }
+      .message { max-width: 94%; }
+      .messages { padding: 14px; gap: 12px; }
+      .msg-bubble { font-size: 15px; }
+      .input-area { padding: 8px 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+      #messageInput { font-size: 16px; }
+      .chip { font-size: 13px; padding: 7px 13px; }
+      .input-note { display: none; }
     }
   </style>
 </head>
@@ -372,6 +403,14 @@ const HTML = `<!DOCTYPE html>
   </aside>
 
   <main class="chat-main">
+    <div class="mobile-bar">
+      <img class="mobile-photo" src="/avatar.jpg" alt="Jackson Maitner">
+      <span class="mobile-name">Jackson Maitner</span>
+      <div class="mobile-actions">
+        <a class="mobile-action" href="https://linkedin.com/in/jackson-maitner" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="mobile-action" href="/resume" target="_blank" rel="noopener">Resume</a>
+      </div>
+    </div>
     <div class="messages" id="messages">
       <div class="message bot">
         <div class="msg-avatar">JM</div>
@@ -380,11 +419,11 @@ const HTML = `<!DOCTYPE html>
             Hey — I'm Jackson Bot. Ask me anything about Jackson's work, what he's built, his background, or what makes him different. Or pick a question below to get started.
           </div>
           <div class="suggestions" id="suggestions">
-            <button class="chip" onclick="quickAsk(this)">How does Jackson scale marketplaces without increasing headcount?</button>
-            <button class="chip" onclick="quickAsk(this)">Tell me about a time Jackson saved a failing channel or automated a massive workflow.</button>
-            <button class="chip" onclick="quickAsk(this)">How does Jackson use technical tools like Python and APIs to outmaneuver competitors?</button>
-            <button class="chip" onclick="quickAsk(this)">Why is Jackson a strong fit for a Growth or Technical Operations role?</button>
-            <button class="chip" onclick="quickAsk(this)">Tell me about The Grateful Team.</button>
+            <button class="chip">How does Jackson scale marketplaces without increasing headcount?</button>
+            <button class="chip">Tell me about a time Jackson saved a failing channel or automated a massive workflow.</button>
+            <button class="chip">How does Jackson use technical tools like Python and APIs to outmaneuver competitors?</button>
+            <button class="chip">Why is Jackson a strong fit for a Growth or Technical Operations role?</button>
+            <button class="chip">Tell me about The Grateful Team.</button>
           </div>
         </div>
       </div>
@@ -407,36 +446,27 @@ const HTML = `<!DOCTYPE html>
 </div>
 
 <script>
-  const history = [];
-  let interviewMode = false;
+  var history = [];
 
-  function toggleInterviewMode() {
-    interviewMode = !interviewMode;
-    const btn = document.getElementById('modeToggle');
-    btn.classList.toggle('active', interviewMode);
-    if (interviewMode) {
-      addBubble('bot', renderText('**Interview Mode on.** I\'ll now structure answers using the STAR method and offer to go deeper on each project.\\n\\nWhat type of role are you hiring for? That\'ll help me highlight the most relevant parts of Jackson\'s background.'));
-    }
+  function escHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  function escHtml(str) {
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  }
-
-  function renderText(str) {
-    return escHtml(str)
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\n/g, '<br>');
+  function renderText(s) {
+    var escaped = escHtml(s);
+    escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    escaped = escaped.replace(/\n/g, '<br>');
+    return escaped;
   }
 
   function scrollBottom() {
-    const m = document.getElementById('messages');
+    var m = document.getElementById('messages');
     m.scrollTop = m.scrollHeight;
   }
 
   function addBubble(role, html) {
-    const msgs = document.getElementById('messages');
-    const wrap = document.createElement('div');
+    var msgs = document.getElementById('messages');
+    var wrap = document.createElement('div');
     wrap.className = 'message ' + role;
     if (role === 'bot') {
       wrap.innerHTML = '<div class="msg-avatar">JM</div><div class="msg-bubble">' + html + '</div>';
@@ -445,30 +475,34 @@ const HTML = `<!DOCTYPE html>
     }
     msgs.appendChild(wrap);
     scrollBottom();
-    return wrap;
   }
 
   function showTyping() {
-    const msgs = document.getElementById('messages');
-    const wrap = document.createElement('div');
-    wrap.className = 'message bot'; wrap.id = 'typing';
+    var msgs = document.getElementById('messages');
+    var wrap = document.createElement('div');
+    wrap.className = 'message bot';
+    wrap.id = 'typing';
     wrap.innerHTML = '<div class="msg-avatar">JM</div><div class="msg-bubble"><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>';
-    msgs.appendChild(wrap); scrollBottom();
+    msgs.appendChild(wrap);
+    scrollBottom();
   }
 
-  function hideTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
+  function hideTyping() {
+    var t = document.getElementById('typing');
+    if (t) t.remove();
+  }
 
   function setDisabled(on) {
     document.getElementById('messageInput').disabled = on;
     document.getElementById('sendBtn').disabled = on;
   }
 
-  async function send(text) {
-    const input = document.getElementById('messageInput');
-    const userText = (text || input.value).trim();
+  function send(text) {
+    var input = document.getElementById('messageInput');
+    var userText = (text || input.value).trim();
     if (!userText) return;
 
-    const s = document.getElementById('suggestions');
+    var s = document.getElementById('suggestions');
     if (s) s.remove();
 
     input.value = '';
@@ -477,42 +511,41 @@ const HTML = `<!DOCTYPE html>
     history.push({ role: 'user', content: userText });
     showTyping();
 
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history, interviewMode })
-      });
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history })
+    }).then(function(res) {
       hideTyping();
-      let botText;
-      if (res.ok) {
-        const data = await res.json();
-        botText = data.response || "Sorry, I couldn't generate a response.";
-      } else {
-        const err = await res.json().catch(() => ({}));
-        botText = err.error || 'Something went wrong. Please try again.';
-      }
-      addBubble('bot', renderText(botText));
-      history.push({ role: 'assistant', content: botText });
-    } catch (_) {
+      return res.json().then(function(data) {
+        var botText;
+        if (res.ok) {
+          botText = data.response || 'Sorry, I could not generate a response.';
+        } else {
+          botText = data.error || 'Something went wrong. Please try again.';
+        }
+        addBubble('bot', renderText(botText));
+        history.push({ role: 'assistant', content: botText });
+        setDisabled(false);
+        document.getElementById('messageInput').focus();
+      });
+    }).catch(function() {
       hideTyping();
       addBubble('bot', 'Network error — please check your connection and try again.');
-    }
-
-    setDisabled(false);
-    document.getElementById('messageInput').focus();
+      setDisabled(false);
+    });
   }
 
-  function quickAsk(btn) {
-    const text = btn.textContent;
-    const s = document.getElementById('suggestions');
-    if (s) s.remove();
-    send(text);
-  }
-
-  document.getElementById('sendBtn').addEventListener('click', () => send());
-  document.getElementById('messageInput').addEventListener('keydown', e => {
+  document.getElementById('sendBtn').addEventListener('click', function() { send(); });
+  document.getElementById('messageInput').addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  document.querySelectorAll('.chip').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      var s = document.getElementById('suggestions');
+      if (s) s.remove();
+      send(chip.textContent);
+    });
   });
 </script>
 </body>
