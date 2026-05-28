@@ -159,7 +159,7 @@ What I built for the team:
 
 Achievements:
 - Spirit Award (2024)
-- AFP National Philanthropy Day Outstanding Volunteer Fundraiser (2024)
+- AFP National Philanthropy Day Outstanding Volunteer Fundraiser (2024) — the team was recognized, which was meaningful
 - Helped grow team from 12 riders to 49 riders
 - $265,000+ raised across three years for Make-A-Wish Michigan
 - Back-to-back Top Team Large Division awards (2024 and 2025)
