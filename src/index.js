@@ -456,7 +456,7 @@ const HTML = `<!DOCTYPE html>
   function renderText(s) {
     var escaped = escHtml(s);
     escaped = escaped.replace(new RegExp('\\*\\*([^*]+)\\*\\*', 'g'), '<strong>$1</strong>');
-    escaped = escaped.split('\n').join('<br>');
+    escaped = escaped.split('\\n').join('<br>');
     return escaped;
   }
 
