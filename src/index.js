@@ -210,48 +210,6 @@ const HTML = `<!DOCTYPE html>
       overflow: hidden;
     }
 
-    /* ── Header ── */
-    .header {
-      background: var(--dark);
-      color: white;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-      box-shadow: 0 1px 0 rgba(255,255,255,0.06);
-      z-index: 10;
-    }
-    .header-avatar {
-      width: 36px; height: 36px;
-      background: var(--red);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 12px; letter-spacing: 0.5px;
-      flex-shrink: 0; color: white;
-    }
-    .header-text { flex: 1; }
-    .header-title { font-size: 15px; font-weight: 700; color: white; }
-    .header-sub { font-size: 11px; color: var(--slate-light); margin-top: 1px; }
-    .mode-toggle {
-      font-size: 12px;
-      font-family: inherit;
-      font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: transparent;
-      color: rgba(255,255,255,0.55);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-    .mode-toggle:hover { border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.8); }
-    .mode-toggle.active {
-      background: var(--red);
-      border-color: var(--red);
-      color: white;
-    }
 
     /* ── Layout ── */
     .layout { display: flex; flex: 1; overflow: hidden; min-height: 0; }
@@ -402,21 +360,13 @@ const HTML = `<!DOCTYPE html>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-avatar">JM</div>
-  <div class="header-text">
-    <div class="header-title">Jackson Bot</div>
-    <div class="header-sub">Ask me anything about Jackson's background</div>
-  </div>
-  <button class="mode-toggle" id="modeToggle" onclick="toggleInterviewMode()">Interview Mode</button>
-</header>
 
 <div class="layout">
 
   <aside class="sidebar">
     <img class="profile-photo" src="/avatar.jpg" alt="Jackson Maitner" />
     <div class="profile-name">Jackson Maitner</div>
-    <div class="profile-location">Grand Rapids, MI &nbsp;·&nbsp; Remote-first</div>
+    <div class="profile-location">Grand Rapids, MI</div>
     <a class="sidebar-btn sidebar-btn-primary" href="https://linkedin.com/in/jackson-maitner" target="_blank" rel="noopener">LinkedIn</a>
     <a class="sidebar-btn sidebar-btn-outline" href="/resume" target="_blank" rel="noopener">Download Resume</a>
   </aside>
