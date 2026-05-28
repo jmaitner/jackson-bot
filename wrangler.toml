@@ -2,9 +2,14 @@ name = "jackson-bot"
 main = "src/index.js"
 compatibility_date = "2025-01-01"
 
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
 [[kv_namespaces]]
 binding = "RATE_LIMITER"
 id = "928afb66a89b4856b55288a0d24d2ef6"
 
-# Set your API key with: npx wrangler secret put ANTHROPIC_API_KEY
-# Never put the key directly in this file
+# Secrets to set via Cloudflare dashboard (Settings → Variables and Secrets):
+#   ANTHROPIC_API_KEY  — your Anthropic API key
+#   RESUME_URL         — direct link to a hosted resume PDF (optional; falls back to LinkedIn)

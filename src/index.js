@@ -258,76 +258,49 @@ const HTML = `<!DOCTYPE html>
 
     /* ── Sidebar ── */
     .sidebar {
-      width: 260px;
+      width: 220px;
       flex-shrink: 0;
       background: var(--white);
       border-right: 1px solid var(--gray-200);
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
-      padding: 22px 18px;
-      gap: 16px;
+      align-items: center;
+      overflow: hidden;
+      padding: 32px 20px 24px;
+      gap: 14px;
     }
 
-    .profile-avatar {
-      width: 60px; height: 60px;
-      background: var(--dark);
+    .profile-photo {
+      width: 88px; height: 88px;
       border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 18px; font-weight: 800;
-      margin: 0 auto 10px;
+      object-fit: cover;
+      object-position: center top;
+      border: 3px solid var(--gray-200);
+      display: block;
       flex-shrink: 0;
     }
     .profile-name { font-size: 15px; font-weight: 700; text-align: center; color: var(--gray-900); }
-    .profile-role { font-size: 12px; font-weight: 600; color: var(--red); text-align: center; margin-top: 3px; }
-    .profile-tagline { font-size: 11px; color: var(--gray-500); text-align: center; margin-top: 4px; line-height: 1.5; }
-    .profile-location { font-size: 11px; color: var(--gray-500); text-align: center; margin-top: 6px; }
+    .profile-location { font-size: 12px; color: var(--gray-500); text-align: center; line-height: 1.5; }
 
-    .divider { height: 1px; background: var(--gray-200); flex-shrink: 0; }
-
-    /* Proof points */
-    .proof-list { display: flex; flex-direction: column; gap: 10px; }
-    .proof-item { font-size: 12px; color: var(--gray-700); line-height: 1.5; }
-    .proof-num { font-weight: 700; color: var(--red); }
-
-    /* Open to section */
-    .open-to { }
-    .open-to-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-500); margin-bottom: 5px; }
-    .open-to-roles { font-size: 12px; font-weight: 600; color: var(--gray-900); line-height: 1.5; }
-    .open-to-details { font-size: 11px; color: var(--gray-500); margin-top: 3px; }
-
-    .sidebar-link {
-      display: block; text-align: center;
-      padding: 8px 12px;
-      border: 1.5px solid var(--dark);
+    .sidebar-btn {
+      display: block; width: 100%; text-align: center;
+      padding: 9px 12px;
       border-radius: 8px;
-      color: var(--dark);
+      font-size: 13px; font-weight: 600;
+      font-family: inherit;
       text-decoration: none;
-      font-size: 12px; font-weight: 600;
+      cursor: pointer;
       transition: all 0.15s ease;
     }
-    .sidebar-link:hover { background: var(--dark); color: white; }
-
-    .wam-card {
-      background: var(--gray-50);
-      border: 1px solid var(--gray-200);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 11.5px;
-      color: var(--gray-700);
-      line-height: 1.6;
+    .sidebar-btn-primary {
+      background: var(--dark); color: white; border: none;
     }
-    .wam-card strong { color: var(--gray-900); display: block; font-size: 12px; margin-bottom: 2px; }
-
-    .sidebar-note {
-      font-size: 10px;
-      color: var(--gray-500);
-      text-align: center;
-      line-height: 1.5;
-      padding-top: 10px;
-      border-top: 1px solid var(--gray-200);
-      margin-top: auto;
+    .sidebar-btn-primary:hover { background: var(--dark-2); }
+    .sidebar-btn-outline {
+      background: transparent; color: var(--dark);
+      border: 1.5px solid var(--gray-300);
     }
+    .sidebar-btn-outline:hover { border-color: var(--dark); background: var(--gray-50); }
 
     /* ── Chat ── */
     .chat-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
@@ -441,57 +414,11 @@ const HTML = `<!DOCTYPE html>
 <div class="layout">
 
   <aside class="sidebar">
-    <div>
-      <div class="profile-avatar">JM</div>
-      <div class="profile-name">Jackson Maitner</div>
-      <div class="profile-role">Growth &amp; Technical Operations</div>
-      <div class="profile-tagline">Bridging marketplace sales and automated infrastructure</div>
-      <div class="profile-location">📍 Grand Rapids, MI &nbsp;·&nbsp; Remote-first</div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="proof-list">
-      <div class="proof-item">
-        Recovered <span class="proof-num">$64,674</span> from 61 dormant SKUs nobody else could move
-      </div>
-      <div class="proof-item">
-        Launched Target Plus from zero — <span class="proof-num">$325K</span> in year one
-      </div>
-      <div class="proof-item">
-        <span class="proof-num">$34 CPA</span> competing against incumbents spending $80–100K/month on ads
-      </div>
-      <div class="proof-item">
-        Built a <span class="proof-num">4-API dashboard</span> auto-refreshing at 6:30am — before anyone asks for the data
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="open-to">
-      <div class="open-to-label">Currently open to</div>
-      <div class="open-to-roles">Senior Ecommerce, Growth Ops, Revenue Ops, AI Operations</div>
-      <div class="open-to-details">$90K–$130K &nbsp;·&nbsp; Remote-first &nbsp;·&nbsp; US Citizen</div>
-    </div>
-
-    <div class="divider"></div>
-
-    <a class="sidebar-link" href="https://linkedin.com/in/jackson-maitner" target="_blank" rel="noopener">
-      View LinkedIn →
-    </a>
-
-    <div class="wam-card">
-      <strong>🚴 The Grateful Team</strong>
-      Make-A-Wish Wish-A-Mile · Founding Member<br>
-      $265K+ raised · Team grew 12 → 49 riders<br>
-      Spirit Award 2024 · Top Team 2024 &amp; 2025
-    </div>
-
-    <div class="sidebar-note">
-      Jackson Bot can make mistakes.<br>
-      Verify important details with Jackson directly<br>
-      via LinkedIn.
-    </div>
+    <img class="profile-photo" src="/avatar.jpg" alt="Jackson Maitner" />
+    <div class="profile-name">Jackson Maitner</div>
+    <div class="profile-location">Grand Rapids, MI &nbsp;·&nbsp; Remote-first</div>
+    <a class="sidebar-btn sidebar-btn-primary" href="https://linkedin.com/in/jackson-maitner" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="sidebar-btn sidebar-btn-outline" href="/resume" target="_blank" rel="noopener">Download Resume</a>
   </aside>
 
   <main class="chat-main">
@@ -723,6 +650,15 @@ export default {
         return json({ error: 'Service temporarily unavailable. Please try again.' }, 503);
       }
     }
+
+    // Resume download — set RESUME_URL as a secret in Cloudflare dashboard
+    if (method === 'GET' && url.pathname === '/resume') {
+      const dest = env.RESUME_URL || 'https://linkedin.com/in/jackson-maitner';
+      return Response.redirect(dest, 302);
+    }
+
+    // Static assets (photo, etc.)
+    if (env.ASSETS) return env.ASSETS.fetch(request);
 
     return new Response('Not found', { status: 404 });
   }
