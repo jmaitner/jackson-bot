@@ -180,6 +180,7 @@ const HTML = `<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jackson Bot — Meet Jackson Maitner</title>
+  <link rel="icon" href="data:,">
   <style>
     :root {
       --red: #DC2626;
@@ -454,8 +455,8 @@ const HTML = `<!DOCTYPE html>
 
   function renderText(s) {
     var escaped = escHtml(s);
-    escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-    escaped = escaped.replace(/\n/g, '<br>');
+    escaped = escaped.replace(new RegExp('\\*\\*([^*]+)\\*\\*', 'g'), '<strong>$1</strong>');
+    escaped = escaped.split('\n').join('<br>');
     return escaped;
   }
 
