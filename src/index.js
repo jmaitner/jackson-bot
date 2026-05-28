@@ -447,7 +447,7 @@ const HTML = `<!DOCTYPE html>
 </div>
 
 <script>
-  var history = [];
+  var chatHistory = [];
 
   function escHtml(s) {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -509,13 +509,13 @@ const HTML = `<!DOCTYPE html>
     input.value = '';
     setDisabled(true);
     addBubble('user', escHtml(userText));
-    history.push({ role: 'user', content: userText });
+    chatHistory.push({ role: 'user', content: userText });
     showTyping();
 
     fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: history })
+      body: JSON.stringify({ messages: chatHistory })
     }).then(function(res) {
       hideTyping();
       return res.json().then(function(data) {
@@ -526,7 +526,7 @@ const HTML = `<!DOCTYPE html>
           botText = data.error || 'Something went wrong. Please try again.';
         }
         addBubble('bot', renderText(botText));
-        history.push({ role: 'assistant', content: botText });
+        chatHistory.push({ role: 'assistant', content: botText });
         setDisabled(false);
         document.getElementById('messageInput').focus();
       });
